@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-api-only-dockerized
+  labels:
+    app: webapp-api-only-dockerized
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: webapp-api-only-dockerized
+    tier: frontend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webapp-api-only-dockerized
+  labels:
+    app: webapp-api-only-dockerized
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: webapp-api-only-dockerized
+        tier: frontend
+    spec:
+      containers:
+      - image: danielmorales1202/webapp-api-only-dockerized:79ebaa16fd7803de27373d8a320eb955298fc921
+        name: webapp-api-only-dockerized
+        env:
+        - name: PASSENGER_APP_ENV
+          value: development
+        ports:
+        - containerPort: 80
+          name: webapp-api-only-dockerized
+        imagePullPolicy: Always
