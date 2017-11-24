@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup
+spec:
+  template:
+    metadata:
+      name: setup
+    spec:
+      containers:
+      - name: setup
+        image: danielmorales1202/webapp-api-only-dockerized:79ebaa16fd7803de27373d8a320eb955298fc921
+        command: ["/bin/bash", "./setup.production.sh"]
+        env:
+        - name: PASSENGER_APP_ENV
+          value: production
+      restartPolicy: Never
